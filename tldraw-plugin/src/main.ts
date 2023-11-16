@@ -8,16 +8,24 @@ type TLDrawState = {
 // Intialize the SAGE3Plugin.
 const s3api = new SAGE3Plugin<TLDrawState>();
 
+let initialized = false;
+let app_id = "";
+
 // Subscribe to updates from the SAGE3 server when other clients update the state.
 s3api.subscribeToUpdates((state) => {
-  const uuid = state._id;
+  if (!initialized) {
+    app_id = state._id;
+    initialized = true;
+  }
 
-  // https://www.tldraw.com/r/${uuid}?viewport=0,0,800,600&page=page:page
-  const draw_url = `https://www.tldraw.com/r/sage3-${uuid}`;
+  if (initialized) {
+    // https://www.tldraw.com/r/${uuid}?viewport=0,0,800,600&page=page:page
+    const draw_url = `https://www.tldraw.com/r/sage3-${app_id}`;
 
-  // Save the URL to the state, just in case
-  s3api.update({ state: { url: draw_url } });
+    // Save the URL to the state, just in case
+    s3api.update({ state: { url: draw_url } });
 
-  // Load the URL in the iframe.
-  window.location.href = draw_url;
+    // Load the URL in the iframe.
+    window.location.href = draw_url;
+  }
 });
