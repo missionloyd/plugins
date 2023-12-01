@@ -112,10 +112,10 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.18.20.tgz#786c5f41f043b07afb1af37683d7c33668858f6d"
   integrity sha512-kTdfRcSiDfQca/y9QIkng02avJ+NCaQvrMejlsB3RRv5sE9rRoeBPISaZpKxHELzRxZyLvNts1P27W3wV+8geQ==
 
-"@sage3/sageplugin@^0.0.13":
-  version "0.0.13"
-  resolved "https://registry.yarnpkg.com/@sage3/sageplugin/-/sageplugin-0.0.13.tgz#8680fac2dfd32e0d67447f598a38f754d7fb207d"
-  integrity sha512-er7SEPwO0T2y9mJtFTeryaNNbUDmv4sa0X5PvdSo2DKcDVmj254Jmiu8PYD+huxNWljL8wVypZsUIZXifhHkzA==
+"@sage3/sageplugin@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@sage3/sageplugin/-/sageplugin-0.0.15.tgz#2bbceef1b78d1f6d6ab4c3d41a28ed404afe5fd1"
+  integrity sha512-YT/URbp6N8BBADzvQ6H7+2QZs9BHe7VLE45WRM0m1rct5c8rYJ59v2bvyOYIl2NN2cdG3r+UNbQFFcG8gl8G+A==
 
 esbuild@^0.18.10:
   version "0.18.20"

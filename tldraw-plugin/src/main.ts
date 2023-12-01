@@ -10,12 +10,16 @@ const s3api = new SAGE3Plugin<TLDrawState>();
 
 let initialized = false;
 let app_id = "";
+let username = "";
 
 // Subscribe to updates from the SAGE3 server when other clients update the state.
-s3api.subscribeToUpdates((state) => {
+s3api.subscribeToUpdates((state, user) => {
+  console.log("TLDdraw update");
   if (!initialized) {
     app_id = state._id;
+    username = user;
     initialized = true;
+    console.log("TLDdraw initialized", app_id, username);
   }
 
   if (initialized) {

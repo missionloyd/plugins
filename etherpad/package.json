@@ -14,6 +14,6 @@
     "vite": "^4.4.5"
   },
   "dependencies": {
-    "@sage3/sageplugin": "^0.0.13"
+    "@sage3/sageplugin": "^0.0.15"
   }
 }
