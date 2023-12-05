@@ -27,6 +27,8 @@ const view = new SceneView({
     tilt: 79.95,
   },
 });
+// view.ui.components = (["attribution", "compass", "zoom"]);
+view.ui.components = ["attribution"];
 
 function Update() {
   const latitude = view.camera.position.latitude;
