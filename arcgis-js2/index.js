@@ -14,7 +14,7 @@ import Search from "https://js.arcgis.com/4.28/@arcgis/core/widgets/Search.js";
 // Only intalize once. Utilize it as a singleton throughout your app.
 const s3api = new SAGE3Plugin();
 
-esriConfig.apiKey = "XXXX";
+esriConfig.apiKey = "xxx";
 
 const ExaggeratedElevationLayer = BaseElevationLayer.createSubclass({
   // Add an exaggeration property whose value will be used
@@ -206,18 +206,16 @@ view.when(function () {
 
       if (ex !== exaggerated) {
         const element = document.getElementById("exaggerate");
-        if (exaggerated) {
-          map.ground = "world-elevation";
-          element.innerHTML = "Enable exaggeration";
-          exaggerated = false;
-        } else {
+        if (ex) {
           map.ground = {
             layers: [elevationLayer],
           };
           element.innerHTML = "Disable exaggeration";
-          exaggerated = true;
+        } else {
+          map.ground = "world-elevation";
+          element.innerHTML = "Enable exaggeration";
         }
-        ex = exaggerated;
+        exaggerated = ex;
       }
     }
   }
