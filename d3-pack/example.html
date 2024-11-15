@@ -1,0 +1,146 @@
+<!-- Code from d3-graph-gallery.com -->
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Create a div where the graph will take place -->
+<div id="my_dataviz"></div>
+
+<!-- Load color palettes -->
+<script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+
+<script>
+  // Set the dimensions and margins of the graph
+  var width = 860;
+  var height = 460;
+
+  // Append the SVG object to the body of the page
+  var svg = d3
+    .select("#my_dataviz")
+    .append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+  // Read data
+  d3.csv(
+    "https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/11_SevCatOneNumNestedOneObsPerGroup.csv",
+    function (data) {
+      // Filter the data
+      data = data.filter(function (d) {
+        return d.value > 10000000;
+      });
+
+      // Define color palette for continents
+      var color = d3
+        .scaleOrdinal()
+        .domain(["Asia", "Europe", "Africa", "Oceania", "Americas"])
+        .range(d3.schemeSet1);
+
+      // Define size scale
+      var size = d3.scaleLinear().domain([0, 1400000000]).range([9, 70]);
+
+      // Create a tooltip
+      var Tooltip = d3
+        .select("#my_dataviz")
+        .append("div")
+        .style("opacity", 0)
+        .attr("class", "tooltip")
+        .style("background-color", "white")
+        .style("border", "solid")
+        .style("border-width", "2px")
+        .style("border-radius", "5px")
+        .style("padding", "5px");
+
+      // Tooltip behavior
+      var mouseover = function (d) {
+        Tooltip.style("opacity", 1);
+      };
+      var mousemove = function (d) {
+        Tooltip.html(
+          "<u>" + d.key + "</u>" + "<br>" + d.value + " inhabitants"
+        )
+          .style("left", d3.event.pageX + 20 + "px")
+          .style("top", d3.event.pageY - 30 + "px");
+      };
+      var mouseleave = function (d) {
+        Tooltip.style("opacity", 0);
+      };
+
+      // Initialize circles
+      var node = svg
+        .append("g")
+        .selectAll("circle")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("class", "node")
+        .attr("r", function (d) {
+          return size(d.value);
+        })
+        .attr("cx", width / 2)
+        .attr("cy", height / 2)
+        .style("fill", function (d) {
+          return color(d.region);
+        })
+        .style("fill-opacity", 0.7)
+        .attr("stroke", "black")
+        .style("stroke-width", 1)
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
+        .call(
+          d3
+            .drag()
+            .on("start", dragstarted)
+            .on("drag", dragged)
+            .on("end", dragended)
+        );
+
+      // Define simulation forces
+      var simulation = d3
+        .forceSimulation()
+        .force("y", d3.forceY().y(height / 2))
+        .force("center", d3.forceCenter().x(width / 2).y(height / 2))
+        .force("charge", d3.forceManyBody().strength(0.1))
+        .force(
+          "collide",
+          d3
+            .forceCollide()
+            .strength(0.2)
+            .radius(function (d) {
+              return size(d.value) + 3;
+            })
+            .iterations(1)
+        );
+
+      // Update positions based on simulation
+      simulation.nodes(data).on("tick", function (d) {
+        node
+          .attr("cx", function (d) {
+            return d.x;
+          })
+          .attr("cy", function (d) {
+            return d.y;
+          });
+      });
+
+      // Drag behavior functions
+      function dragstarted(d) {
+        if (!d3.event.active) simulation.alphaTarget(0.03).restart();
+        d.fx = d.x;
+        d.fy = d.y;
+      }
+      function dragged(d) {
+        d.fx = d3.event.x;
+        d.fy = d3.event.y;
+      }
+      function dragended(d) {
+        if (!d3.event.active) simulation.alphaTarget(0.03);
+        d.fx = null;
+        d.fy = null;
+      }
+    }
+  );
+</script>
